@@ -31,7 +31,8 @@ declare(strict_types=1);
 
 namespace OCA\Backup\Cron;
 
-use OC\BackgroundJob\TimedJob;
+use OCP\BackgroundJob\TimedJob; /*minor change here*/
+use OCP\AppFramework\Utility\ITimeFactory; /*added this*/
 use OCA\Backup\Exceptions\JobsTimeSlotException;
 use OCA\Backup\Service\ConfigService;
 use OCA\Backup\Service\CronService;
@@ -70,11 +71,14 @@ class Backup extends TimedJob {
 	 * @param LoggerInterface $loggerInterface
 	 */
 	public function __construct(
+		ITimeFactory $time, /*added this*/
 		PointService $pointService,
 		CronService $cronService,
 		ConfigService $configService,
 		LoggerInterface $loggerInterface
 	) {
+		
+		parent::__construct($time); /*added this*/
 		$this->setInterval(900);
 
 		$this->pointService = $pointService;

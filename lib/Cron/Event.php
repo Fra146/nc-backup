@@ -31,7 +31,9 @@ declare(strict_types=1);
 
 namespace OCA\Backup\Cron;
 
-use OC\BackgroundJob\TimedJob;
+
+use OCP\BackgroundJob\TimedJob; /*minor change here*/
+use OCP\AppFramework\Utility\ITimeFactory; /*added this*/
 use OCA\Backup\Db\EventRequest;
 use OCA\Backup\Model\BackupEvent;
 use OCA\Backup\Service\ConfigService;
@@ -75,12 +77,15 @@ class Event extends TimedJob {
 	 * @param ConfigService $configService
 	 */
 	public function __construct(
+		ITimeFactory $time,
 		EventRequest $eventRequest,
 		PointService $pointService,
 		FilesService $filesService,
 		CronService $cronService,
 		ConfigService $configService
 	) {
+		parent::__construct($time),
+
 		$this->setInterval(1);
 
 		$this->eventRequest = $eventRequest;

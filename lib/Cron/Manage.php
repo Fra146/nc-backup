@@ -30,8 +30,9 @@ declare(strict_types=1);
 
 
 namespace OCA\Backup\Cron;
+use OCP\BackgroundJob\TimedJob; /*minor change here*/
+use OCP\AppFramework\Utility\ITimeFactory; /*added this*/
 
-use OC\BackgroundJob\TimedJob;
 use OCA\Backup\Exceptions\ExternalFolderNotFoundException;
 use OCA\Backup\Exceptions\JobsTimeSlotException;
 use OCA\Backup\Model\RestoringPoint;
@@ -86,6 +87,8 @@ class Manage extends TimedJob {
 	 * @param ConfigService $configService
 	 */
 	public function __construct(
+
+		ITimeFactory $time, /*added this*/
 		CronService $cronService,
 		PointService $pointService,
 		PackService $packService,
@@ -94,6 +97,8 @@ class Manage extends TimedJob {
 		OutputService $outputService,
 		ConfigService $configService
 	) {
+
+		parent::__construct($time); /*added this*/
 		$this->setInterval(3600);
 
 		$this->cronService = $cronService;
